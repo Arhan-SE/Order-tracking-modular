@@ -41,11 +41,9 @@ def get_answer_from_context(query, context):
     return response.choices[0].message.content.strip()
 
 def run(query):
-    # Search only 1 most relevant memory entry instead of 3
     relevant_info = memory.search(query=query, limit=1, user_id="default_user")
     context = relevant_info['results'][0]["memory"] if relevant_info['results'] else ""
 
-    # Check if the answer exists in session cache
     if query in st.session_state:
         return st.session_state[query]
 
@@ -58,7 +56,7 @@ def run(query):
         answer = response
         memory.add(f"User Query: {query}\nAI Response: {answer}", user_id="default_user")
 
-    st.session_state[query] = answer  # Cache response
+    st.session_state[query] = answer  
     return answer
 
 st.title("Order Tracking Chatbot")
@@ -71,7 +69,6 @@ if prompt := st.chat_input("What would you like to know?"):
     response = run(prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Show only last 5 messages for better performance
 for message in st.session_state.messages[-5:]:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
