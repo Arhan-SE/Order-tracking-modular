@@ -1,0 +1,20 @@
+from mem0 import Memory
+from dotenv import load_dotenv
+
+load_dotenv()
+config = {
+    "vector_store": {
+        "provider": "chroma",
+        "config": {
+            "collection_name": "chatbot_memory",
+            "path": "./chroma_db",
+        },
+    },
+}
+
+memory = Memory.from_config(config)
+
+relevant_info=memory.search(query="Tell me the details of order number 936848", limit=10, user_id="default_user")
+context="\n".join(msg.get("memory", "") for msg in relevant_info if isinstance(msg, dict))
+
+print(context)
