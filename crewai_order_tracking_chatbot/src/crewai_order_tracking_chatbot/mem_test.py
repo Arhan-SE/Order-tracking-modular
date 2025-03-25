@@ -15,6 +15,6 @@ config = {
 memory = Memory.from_config(config)
 
 relevant_info=memory.search(query="Tell me the details of order number 936848", limit=10, user_id="default_user")
-context="\n".join(msg.get("memory", "") for msg in relevant_info if isinstance(msg, dict))
+context=[entry["memory"] for entry in relevant_info['results']]
 
-print(context)
+print([me])
