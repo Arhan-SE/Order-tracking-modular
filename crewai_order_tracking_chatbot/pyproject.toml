@@ -1,0 +1,20 @@
+[project]
+name = "crewai_order_tracking_chatbot"
+version = "0.1.0"
+description = "crewai_order_tracking_chatbot using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<=3.13"
+dependencies = [
+    "crewai[tools]>=0.86.0,<1.0.0"
+]
+
+[project.scripts]
+crewai_order_tracking_chatbot = "crewai_order_tracking_chatbot.main:run"
+run_crew = "crewai_order_tracking_chatbot.main:run"
+train = "crewai_order_tracking_chatbot.main:train"
+replay = "crewai_order_tracking_chatbot.main:replay"
+test = "crewai_order_tracking_chatbot.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
