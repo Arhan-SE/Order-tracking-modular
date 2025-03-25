@@ -15,6 +15,7 @@ config = {
 memory = Memory.from_config(config)
 
 relevant_info=memory.search(query="Tell me the details of order number 936848", limit=10, user_id="default_user")
-context=[entry["memory"] for entry in relevant_info['results']]
+context_lst=[entry["memory"] for entry in relevant_info['results']]
 
-print([me])
+for context in context_lst:
+    print(context)
