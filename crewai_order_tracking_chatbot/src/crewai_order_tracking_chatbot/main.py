@@ -47,7 +47,7 @@ def get_answer_from_context(query, context):
     Second GPT to provide the answer using context
     """
     messages = [
-        {"role": "system", "content": "You are an Order Tracking Chatbot. Answer the query using the provided context about the tracking details. If you cannot answer then just say 'i cannot'"},
+        {"role": "system", "content": "You are an Order Tracking Chatbot. Answer the query using the provided context about the tracking details."},
         {"role": "user", "content": f"Context: {context}\n\nQuery: {query}"}
     ]
 
@@ -83,7 +83,24 @@ def run(query):
         memory.add(f"User Query: {query}\nAI Response: {response}", user_id="default_user")
         return response
 
-if __name__ == "__main__":
+st.title("Order Tracking Chatbot")
 
-    query = "What is the order detail of order number 936848"
-    print(run(query))
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if prompt := st.chat_input("What would you like to know?"):
+    st.chat_message("user").markdown(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    response = run(prompt)
+
+    st.chat_message("assistant").markdown(response)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+
+
+
