@@ -1,21 +1,25 @@
-from mem0 import Memory
+import streamlit as st
 from dotenv import load_dotenv
+import os
+from crewai_order_tracking_chatbot.crew import CrewaiOrderTrackingChatbotCrew
 
 load_dotenv()
-config = {
-    "vector_store": {
-        "provider": "chroma",
-        "config": {
-            "collection_name": "chatbot_memory",
-            "path": "./chroma_db",
-        },
-    },
-}
 
-memory = Memory.from_config(config)
+def run(query):
+    crew_instance = CrewaiOrderTrackingChatbotCrew()
+    crew_object = crew_instance.crew()
 
-relevant_info=memory.search(query="Tell me the details of order number 936848", limit=6, user_id="default_user")
-context_lst=[entry["memory"] for entry in relevant_info['results']]
+    response = crew_object.kickoff(inputs={"query": query})
 
-for context in context_lst:
-    print(context)
+    print("\nCrew finished successfully.")
+    print()
+    print("----------------------")
+    print()
+    return response
+
+query="Tell me the details of order number 936841" #Where was order number 936841 going to again?
+response = run(query)
+print()
+print(response)
+print("---------------")
+print()
