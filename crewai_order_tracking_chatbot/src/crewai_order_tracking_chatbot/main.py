@@ -1,63 +1,58 @@
 import streamlit as st
 from dotenv import load_dotenv
-# from mem0 import Memory
-from openai import OpenAI
 import os
 from crewai_order_tracking_chatbot.crew import CrewaiOrderTrackingChatbotCrew
 
 load_dotenv()
 
-client = OpenAI()
 
-# config = {
-#     "llm": {
-#         "provider": "openai",
-#         "config": {
-#             "model": "gpt-3.5-turbo",
-#         },
-#     },
-#     "vector_store": {
-#         "provider": "chroma",
-#         "config": {
-#             "collection_name": "chatbot_memory",
-#             "path": "./chroma_db",
-#         },
-#     },
-# }
 
-# memory = Memory.from_config(config)
 
-# def get_answer_from_context(query, context):
-#     messages = [
-#         {"role": "system", "content": "You are an Order Tracking Chatbot. Answer using the given context. If unsure, say 'i cannot'."},  
-#         {"role": "user", "content": f"Context: {context}\nQuery: {query}"}  
-#     ]
-
-#     response = client.chat.completions.create(
-#         model="gpt-3.5-turbo",
-#         messages=messages
-#     )
-
-#     return response.choices[0].message.content.strip()
 
 def run(query):
-    # relevant_info = memory.search(query=query, limit=1, user_id="default_user")
-    # context = relevant_info['results'][0]["memory"] if relevant_info['results'] else ""
 
-    # if query in st.session_state:
-    #     return st.session_state[query]
+    if query in st.session_state:
+        return st.session_state[query]
 
-    # answer = get_answer_from_context(query, context)
+    crew_instance = CrewaiOrderTrackingChatbotCrew()
+    crew_object = crew_instance.crew()
 
-    # if "i cannot" not in answer.lower():
-    #     memory.add(f"User Query: {query}\nAI Response: {answer}", user_id="default_user")
-    # else:
-    response = CrewaiOrderTrackingChatbotCrew().crew().kickoff(inputs={"query": query})
-    # answer = response
-    #memory.add(f"User Query: {query}\nAI Response: {answer}", user_id="default_user")
+    response = crew_object.kickoff(inputs={"query": query})
 
-    # st.session_state[query] = answer  
+    print("\nCrew finished successfully.")
+    print()
+    print("----------------------")
+    print()
+
+    st.session_state[query] = response  
     return response
 
-responses=run("Tell me the details of order number")
-print(responses)
+
+st.title("📦 Order Tracking Chatbot")
+st.caption("Ask me about your order status!")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Hello! How can I help you track your order today?"}
+    ]
+
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
+
+user_input = st.chat_input("e.g., Where is order 936850?")
+if user_input:
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.markdown(user_input)
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            response = run(user_input)
+            st.markdown(response)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+if st.sidebar.button("Clear Chat History"):
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Chat history cleared. How can I help?"}
+    ]
+    st.rerun()

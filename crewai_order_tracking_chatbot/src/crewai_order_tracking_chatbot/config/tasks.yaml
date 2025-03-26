@@ -4,5 +4,5 @@ task:
   expected_output: The expected output should be a well-structured sentence that directly answers the user's query {query} using the retrieved tracking details.
   async_execution: false
   agent: order_tracking_specialist
-
+  memory: true
 

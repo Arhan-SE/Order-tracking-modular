@@ -8,7 +8,7 @@ from mem0 import MemoryClient
 from dotenv import load_dotenv
 
 load_dotenv()
-client=MemoryClient()
+client_mem=MemoryClient()
 @CrewBase
 class CrewaiOrderTrackingChatbotCrew():
     """CrewaiOrderTrackingChatbot crew"""
@@ -39,9 +39,8 @@ class CrewaiOrderTrackingChatbotCrew():
             tasks=self.tasks, 
             process=Process.sequential,
             verbose=False,
-            memory=False,
             memory_config={
          "provider": "mem0",
-         "config": {"user_id": "default_user"},
+         "config": {"agent_id": "default_agent"},
      },
     )
