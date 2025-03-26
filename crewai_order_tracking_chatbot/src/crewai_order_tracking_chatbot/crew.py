@@ -2,12 +2,13 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_order_tracking_chatbot.tools.custom_tool import OrderTrackingTool
 import os
-
+from mem0 import MemoryClient
 
 
 from dotenv import load_dotenv
 
 load_dotenv()
+client=MemoryClient()
 @CrewBase
 class CrewaiOrderTrackingChatbotCrew():
     """CrewaiOrderTrackingChatbot crew"""
@@ -37,5 +38,10 @@ class CrewaiOrderTrackingChatbotCrew():
             agents=self.agents, 
             tasks=self.tasks, 
             process=Process.sequential,
-            verbose=False
+            verbose=False,
+            memory=False,
+            memory_config={
+         "provider": "mem0",
+         "config": {"user_id": "default_user"},
+     },
     )
