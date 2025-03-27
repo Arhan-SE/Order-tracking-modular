@@ -1,7 +1,7 @@
 import streamlit as st
 from dotenv import load_dotenv
 import os
-from crewai_order_tracking_chatbot.crew import CrewaiOrderTrackingChatbotCrew
+from crewai_order_tracking_chatbot.crew import order_tracking_chatbot
 
 load_dotenv()
 
@@ -14,8 +14,7 @@ def run(query):
     if query in st.session_state:
         return st.session_state[query]
 
-    crew_instance = CrewaiOrderTrackingChatbotCrew()
-    crew_object = crew_instance.crew()
+    crew_object = order_tracking_chatbot()
 
     response = crew_object.kickoff(inputs={"query": query})
 

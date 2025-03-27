@@ -1,7 +1,7 @@
 
 from dotenv import load_dotenv
 import os
-from crewai_order_tracking_chatbot.crew import CrewaiOrderTrackingChatbotCrew
+from crewai_order_tracking_chatbot.crew import order_tracking_chatbot
 
 
 load_dotenv()
@@ -13,8 +13,7 @@ while True:
     print(f"Starting crew kickoff with query: '{query}'") 
 
     try:
-        crew_instance = CrewaiOrderTrackingChatbotCrew()
-        crew_object = crew_instance.crew()
+        crew_object = order_tracking_chatbot()
 
         response = crew_object.kickoff(inputs={"query": query})
 

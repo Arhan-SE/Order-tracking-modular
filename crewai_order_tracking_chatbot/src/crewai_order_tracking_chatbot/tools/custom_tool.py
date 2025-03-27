@@ -11,7 +11,7 @@ CLIENT_API_URL = os.getenv("CLIENT_API_URL")
 
 class OrderTrackingInput(BaseModel):
     """Schema for tracking order input."""
-    booking_number: str = Field(..., description="Booking number for the order.")
+    booking_number: str = Field(..., description="Booking number or order number or tracking number for the order.")
 
 class OrderTrackingTool(BaseTool):
     name: str = "Order Tracking Tool"
