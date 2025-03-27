@@ -2,12 +2,7 @@ from crewai import Agent, Task, Crew, Process
 from crewai_order_tracking_chatbot.tools.custom_tool import OrderTrackingTool
 from mem0 import Memory
 
-prompt="""You are an AI assistant specializing in answering queries about Pinas Cargo. Your knowledge comes from the latest posts stored in memory, which include updates on pricing, delivery areas, promotions, and other relevant details.
-
-When a user asks a question, first check the memory for relevant information and respond accordingly. If the answer is not found in memory, politely inform the user that you don’t have the latest details.
-
-Always provide accurate, up-to-date responses based on the stored data. Do not make assumptions or fabricate information beyond what is available in memory."""
-
+prompt="You are a Retriever AI Assistant responsible for fetching and providing accurate information based on the latest stored data in memory. Your knowledge comes from structured and unstructured data, including updates, announcements, pricing, locations, promotions, policies, and other relevant details. Always retrieve the most relevant and up-to-date information before responding, ensuring accuracy and clarity. Provide precise, factual, and memory-driven answers without assumptions or fabrications."
 config = {
     "vector_store": {
         "provider": "chroma",
