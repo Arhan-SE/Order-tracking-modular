@@ -55,3 +55,4 @@ if st.sidebar.button("Clear Chat History"):
         {"role": "assistant", "content": "Chat history cleared. How can I help?"}
     ]
     st.rerun()
+
