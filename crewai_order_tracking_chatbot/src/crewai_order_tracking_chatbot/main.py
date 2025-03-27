@@ -6,9 +6,6 @@ from crewai_order_tracking_chatbot.crew import order_tracking_chatbot
 load_dotenv()
 
 
-
-
-
 def run(query):
 
     if query in st.session_state:

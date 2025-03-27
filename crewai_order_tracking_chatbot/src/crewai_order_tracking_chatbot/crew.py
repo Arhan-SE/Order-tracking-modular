@@ -2,6 +2,12 @@ from crewai import Agent, Task, Crew, Process
 from crewai_order_tracking_chatbot.tools.custom_tool import OrderTrackingTool
 from mem0 import Memory
 
+prompt="""You are an AI assistant specializing in answering queries about Pinas Cargo. Your knowledge comes from the latest posts stored in memory, which include updates on pricing, delivery areas, promotions, and other relevant details.
+
+When a user asks a question, first check the memory for relevant information and respond accordingly. If the answer is not found in memory, politely inform the user that you don’t have the latest details.
+
+Always provide accurate, up-to-date responses based on the stored data. Do not make assumptions or fabricate information beyond what is available in memory."""
+
 config = {
     "vector_store": {
         "provider": "chroma",
@@ -9,8 +15,10 @@ config = {
             "collection_name": "memory",
             "path": "db",
         }
-    }
+    },
+    "custom_instructions": prompt
 }
+
 m = Memory.from_config(config)
 
 
@@ -48,8 +56,7 @@ def order_tracking_chatbot():
         verbose=False,
         memory_config={
             "provider": "mem0",
-            "config": {"instance": m, "user_id": "default_user"}, # pass the instance of memory, and a user_id.
+            "config": {"instance": m, "user_id": "default_user", "custom_instructions": prompt}, # pass the instance of memory, and a user_id.
         },
     )
-
     return crew
